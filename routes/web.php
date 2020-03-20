@@ -10,4 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'PagesController@root')->name('root');
+Route::get('/', 'PagesController@root')->name('root')->middleware('verified');
+Auth::routes(['verify' => true]);
+// Route::get('/home', 'HomeController@index')->name('home');
