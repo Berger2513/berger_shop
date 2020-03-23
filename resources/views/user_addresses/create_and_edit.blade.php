@@ -1,5 +1,6 @@
 @extends('layouts.app')
-@section('title', '新增收货地址')
+
+@section('title', ($address->id ? '修改': '新增') . '收货地址')
 @section('css')
 
    <style>
