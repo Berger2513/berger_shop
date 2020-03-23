@@ -22,7 +22,6 @@ class UserAddressesController extends Controller
 
     public function store(UserAddressRequest $request)
     {
-    	$this->authorize('own', $user_address);
         $request->user()->addresses()->create($request->only([
             'province',
             'city',
