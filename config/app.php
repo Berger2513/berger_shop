@@ -166,7 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
-
+        Freyo\Flysystem\QcloudCOSv5\ServiceProvider::class,
         /*
          * Application Service Providers...
          */

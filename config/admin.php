@@ -88,11 +88,11 @@ return [
      */
     'upload' => [
         // 对应 filesystem.php 中的 disks
-        'disk' => 'public',
+        'disk' => 'cosv5',
 
         'directory' => [
-            'image' => 'images',
-            'file'  => 'files',
+            'image' => 'image',
+            'file'  => 'file',
         ],
     ],
 
