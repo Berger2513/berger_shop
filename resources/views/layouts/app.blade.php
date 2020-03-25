@@ -10,6 +10,7 @@
     <!-- 样式 -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/base.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/page.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app" class="{{ route_class() }}-page">
