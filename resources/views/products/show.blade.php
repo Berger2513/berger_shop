@@ -8,7 +8,7 @@
   <div class="card-body product-info">
     <div class="row">
       <div class="col-5">
-        <img class="cover" src="{{ $product->image_url }}" alt="">
+        <img class="cover" src="{{ config('berger.img_url').'/'.$product->image }}" alt="">
       </div>
       <div class="col-7">
         <div class="title">{{ $product->title }}</div>
