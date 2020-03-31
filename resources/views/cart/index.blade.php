@@ -50,6 +50,34 @@
       @endforeach
       </tbody>
     </table>
+
+    <!-- 开始 -->
+<div>
+  <form class="form-horizontal" role="form" id="order-form">
+    <div class="form-group row">
+      <label class="col-form-label col-sm-3 text-md-right">选择收货地址</label>
+      <div class="col-sm-9 col-md-7">
+        <select class="form-control" name="address">
+          @foreach($addresses as $address)
+            <option value="{{ $address->id }}">{{ $address->full_address }} {{ $address->contact_name }} {{ $address->contact_phone }}</option>
+          @endforeach
+        </select>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-form-label col-sm-3 text-md-right">备注</label>
+      <div class="col-sm-9 col-md-7">
+        <textarea name="remark" class="form-control" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="offset-sm-3 col-sm-3">
+        <button type="button" class="btn btn-primary btn-create-order">提交订单</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- 结束 -->
   </div>
 </div>
 </div>
@@ -72,7 +100,7 @@
         $(this).prop('checked', checked);
       });
     });
-
+    //移除商品
     $('.btn-remove').click(function () {
       // $(this) 可以获取到当前点击的 移除 按钮的 jQuery 对象
       var id = $(this).closest('tr').data('id');
@@ -107,6 +135,72 @@
             })
         })
         })
+    });
+
+
+
+     //订单 create
+    $('.btn-create-order').click(function () {
+      var req = {
+        address_id: $('#order-form').find('select[name=address]').val(),
+        items: [],
+        _token: '{{ csrf_token()}}',
+        remark: $('#order-form').find('textarea[name=remark]').val(),
+      };
+
+
+
+      layui.use(['layer', 'form'], function () {
+            var layer = layui.layer;
+            //loading
+            var loading = layer.load(2);
+            // 拿取商值
+            $('table tr[data-id]').each(function () {
+
+              // 获取当前行的单选框
+              var $checkbox = $(this).find('input[name=select][type=checkbox]');
+              // 如品的果单选框被禁用或者没有被选中则跳过
+              if ($checkbox.prop('disabled') || !$checkbox.prop('checked')) {
+                return;
+              }
+
+              var $input = $(this).find('input[name=amount]');
+              // 如果用户将数量设为 0 或者不是一个数字，则也跳过
+
+              if ($input.val() == 0 || isNaN($input.val())) {
+                return;
+              }
+
+              // 把 SKU id 和数量存入请求参数数组中
+              req.items.push({
+                sku_id: $(this).data('id'),
+                amount: $input.val(),
+              })
+            })
+
+            if (req.items.length < 1) {
+
+              layer.close(loading);
+              layer.msg('请选择商品',{icon: 5});
+              return ;
+            }
+     
+            $.ajax({
+              url: '{{route("orders.store")}}',
+              type: 'POST',
+              dataType: 'JSON',
+              data: req,
+              success: function (data) {
+
+                  console.log(data);
+                  // //撤回加载层
+                   layer.close(loading);
+
+                 layer.msg('购买成功');
+              }
+          })
+
+        });
     });
   });
 </script>
