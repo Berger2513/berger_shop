@@ -103,6 +103,7 @@ class ProductsController extends AdminController
 
         // 创建一个选择图片的框
         $form->image('image', '封面图片')->rules('required|image');
+    
 
         // 创建一个富文本编辑器
         // $form->editor('description', '商品描述')->rules('required');

@@ -45,7 +45,7 @@
             <button class="btn btn-success btn-favor">❤ 收藏</button>
           @endif
 
-          <button class="btn btn-primary btn-add-to-cart">加入购物车</button>
+          <button class="btn btn-primary btn-add-to-cart btn-add-to-cart">加入购物车</button>
         </div>
       </div>
     </div>
@@ -158,6 +158,79 @@
             // });
       })
   });
+
+
+   //加入购物车
+    $('.btn-add-to-cart').on('click' , function(){
+      var url  = '{{ route("cart.add") }}';
+      var sku_id = $('label.active input[name=skus]').val();
+      var amount = $('.cart_amount input').val();
+    //   var sku_id  = '{{ $product->id }}';
+    //   var amount  = '{{ $product->id }}';
+      var _token ='{{ csrf_token() }}';
+
+        console.log(sku_id+'```'+ amount);
+       layui.use(['layer', 'form'], function () {
+          var layer = layui.layer;
+          loading = layer.load(3);
+
+        // if (amount == 0) {
+        //             layer.msg('商品输入不能为0', {icon: 5});
+        //             layer.close(loading);
+        //             return;
+        //     }
+        // if (undefined == sku_id  || '' == sku_id) {
+        //     layer.msg('请选择商品', {icon: 5});
+        //     layer.close(loading);
+        //     return;
+        // }
+
+          $.ajax({
+              url: url,
+              type: 'POST',
+              dataType: 'JSON',
+              data: {
+                  'sku_id': sku_id,
+                  'amount': amount,
+                  '_token': _token
+              },
+              success: function (data) {
+                  // //撤回加载层
+                layer.close(loading);
+                console.log(data);
+                layer.msg('添加成功', function () {
+                              console.log(data)
+                              //操作成功刷新页面
+                                 location.href = '{{ route('cart.index') }}';
+
+                        })
+              },
+              error: function (data) {
+
+                console.log(data.responseJSON)
+
+                if(data.responseJSON.errors) {
+                          if(data.responseJSON.errors.sku_id) {
+                            layer.close(loading);
+                            layer.msg(data.responseJSON.errors.sku_id[0], {icon: 5});
+                          }
+
+                          if(data.responseJSON.errors.amount) {
+                            layer.close(loading);
+                            layer.msg(data.responseJSON.errors.amount[0], {icon: 5});
+                          }
+
+                        } else {
+                          layer.close(loading);
+                          layer.msg('请先登录', {icon: 5});
+
+                        }
+              },
+          })
+
+        })
+    });
+
 
   });
 </script>

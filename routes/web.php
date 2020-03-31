@@ -13,15 +13,10 @@
 
 
 Auth::routes(['verify' => true]);
-// Route::get('/home', 'HomeController@index')->name('home');
-
-// Route::get('/', 'PagesController@root')->name('root');
-// Route::get('/test', 'PagesController@test')->name('test');
-
 
 Route::redirect('/', '/products')->name('root');
 Route::get('products', 'ProductsController@index')->name('products.index');
-Route::get('products/{product}', 'ProductsController@show')->name('products.show');
+
 
 
 
@@ -37,4 +32,12 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     
     Route::post('products/{product}/favorite', 'ProductsController@favor')->name('products.favor');
     Route::delete('products/{product}/favorite', 'ProductsController@disfavor')->name('products.disfavor');
+    Route::get('products/favorites', 'ProductsController@favorites')->name('products.favorites');
+
+
+    Route::post('cart', 'CartController@add')->name('cart.add');
+    Route::get('cart', 'CartController@index')->name('cart.index');
+    Route::get('cart/{sku}', 'CartController@remove')->name('cart.remove');
 });
+
+Route::get('products/{product}', 'ProductsController@show')->name('products.show');
