@@ -11,9 +11,10 @@ use App\Models\Order;
 use Carbon\Carbon;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
+use Mail;
 class OrdersController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
         $orders = Order::query()
             // 使用 with 方法预加载，避免N + 1问题
