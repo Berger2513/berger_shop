@@ -11,10 +11,18 @@ use App\Models\Order;
 use Carbon\Carbon;
 use App\Exceptions\InvalidRequestException;
 use App\Jobs\CloseOrder;
+use Mail;
 class OrdersController extends Controller
 {
-     public function index(Request $request)
+    public function index(Request $request)
     {
+        $email ='15757591513@163.com';
+        Mail::send('pages.email',['name'=>'123'],function($message) use($email){
+            $to = $email;
+            $message ->to($to)->subject('邮件测试');
+        });
+
+
         $orders = Order::query()
             // 使用 with 方法预加载，避免N + 1问题
             ->with(['items.product', 'items.productSku']) 
