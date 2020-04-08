@@ -63,6 +63,30 @@
           {!! $product->description !!}
         </div>
         <div role="tabpanel" class="tab-pane" id="product-reviews-tab">
+          <!-- 评论列表开始 -->
+          <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <td>用户</td>
+              <td>商品</td>
+              <td>评分</td>
+              <td>评价</td>
+              <td>时间</td>
+            </tr>
+            </thead>
+            <tbody>
+              @foreach($reviews as $review)
+              <tr>
+                <td>{{ $review->order->user->name }}</td>
+                <td>{{ $review->productSku->title }}</td>
+                <td>{{ str_repeat('★', $review->rating) }}{{ str_repeat('☆', 5 - $review->rating) }}</td>
+                <td>{{ $review->review }}</td>
+                <td>{{ $review->reviewed_at->format('Y-m-d H:i') }}</td>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+  <!-- 评论列表结束 -->
         </div>
       </div>
     </div>
@@ -169,21 +193,9 @@
     //   var amount  = '{{ $product->id }}';
       var _token ='{{ csrf_token() }}';
 
-        console.log(sku_id+'```'+ amount);
        layui.use(['layer', 'form'], function () {
           var layer = layui.layer;
           loading = layer.load(3);
-
-        // if (amount == 0) {
-        //             layer.msg('商品输入不能为0', {icon: 5});
-        //             layer.close(loading);
-        //             return;
-        //     }
-        // if (undefined == sku_id  || '' == sku_id) {
-        //     layer.msg('请选择商品', {icon: 5});
-        //     layer.close(loading);
-        //     return;
-        // }
 
           $.ajax({
               url: url,

@@ -20,4 +20,8 @@ Route::group([
     $router->get('products/{id}/edit', 'ProductsController@edit');
 	$router->put('products/{id}', 'ProductsController@update');
 	$router->get('products/{id}', 'ProductsController@detail');
+    $router->get('orders', 'OrdersController@index')->name('admin.orders.index');
+    $router->get('orders/{order}', 'OrdersController@detail')->name('admin.orders.show');
+    $router->post('orders/{order}/ship', 'OrdersController@ship')->name('admin.orders.ship');
+    $router->post('orders/{order}/refund', 'OrdersController@handleRefund')->name('admin.orders.handle_refund');
 });
